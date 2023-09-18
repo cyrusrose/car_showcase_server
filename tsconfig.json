@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "./build",
+    "module": "commonjs",
+    "target": "es6",
+    "rootDirs": ["./src", "./prisma"],
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true
+  }
+}
