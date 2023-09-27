@@ -1,28 +1,66 @@
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
-
-type Mutation
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
 
 type Post {
-  author: User!
-  content: String
-  createdAt: DateTime!
   id: Int!
-  published: Boolean!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
   title: String!
-  updatedAt: DateTime!
+  content: String
+  published: Boolean
   viewCount: Int!
+  author: User
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type User {
+  id: Int!
+  email: String!
+  name: String
+  posts: [Post!]
 }
 
 type Query {
-  findByEmail(email: String!): User
+  allUsers: [User!]
+  draftsByUser(userUniqueInput: UserUniqueInput!): [Post!]
+  postById(id: Float!): Post
+  feed(searchString: String, skip: Float, take: Float, orderBy: PostOrderByUpdatedAtInput): [Post!]!
 }
 
-type User {
+input UserUniqueInput {
+  id: Float
+  email: String
+}
+
+input PostOrderByUpdatedAtInput {
+  updatedAt: SortOrder!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+type Mutation {
+  signupUser(data: UserCreateInput!): User!
+  createDraft(data: PostCreateInput!, authorEmail: String!): Post!
+  incrementPostViewCount(id: Float!): Post!
+  togglePublishPost(id: Float!): Post
+  deletePost(id: Float!): Post
+}
+
+input UserCreateInput {
   email: String!
-  id: Int!
   name: String
-  posts: [Post!]
+  posts: [PostCreateInput!]
+}
+
+input PostCreateInput {
+  title: String!
+  content: String
 }

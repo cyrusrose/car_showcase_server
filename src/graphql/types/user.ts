@@ -1,26 +1,20 @@
-import { builder } from "../builder"
-import prisma from "../../lib/prisma"
+import "reflect-metadata"
+import { ObjectType, Field, Int } from "@nestjs/graphql"
+import { IsEmail } from "class-validator"
+import { Post } from "./post"
 
-builder.prismaObject("User", {
-    fields: (t) => ({
-        id: t.exposeInt("id"),
-        name: t.exposeString("name", { nullable: true }),
-        email: t.exposeString("email"),
-        posts: t.relation("posts", { nullable: true })
-    })
-})
+@ObjectType()
+export class User {
+    @Field((type) => Int)
+    id: number
 
-builder.queryField("findByEmail", (t) =>
-    t.prismaField({
-        type: "User",
-        nullable: true,
-        args: {
-            email: t.arg.string({ required: true })
-        },
-        resolve: (query, _, args) =>
-            prisma.user.findUnique({
-                ...query,
-                where: { email: args.email }
-            })
-    })
-)
+    @Field()
+    @IsEmail()
+    email: string
+
+    @Field((type) => String, { nullable: true })
+    name?: string | null
+
+    @Field((type) => [Post], { nullable: true })
+    posts?: [Post] | null
+}
