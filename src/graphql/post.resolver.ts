@@ -22,29 +22,18 @@ export class PostCreateInput {
     title: string
 
     @Field({ nullable: true })
-    content: string
+    content: string | null
+
+    @Field({ defaultValue: false })
+    published: boolean
 }
 
-@InputType()
-class PostOrderByUpdatedAtInput {
-    @Field((type) => SortOrder)
-    updatedAt: SortOrder
-}
-
-enum SortOrder {
-    asc = "asc",
-    desc = "desc"
-}
-
-registerEnumType(SortOrder, {
-    name: "SortOrder"
-})
 @Resolver(Post)
 export class PostResolver {
     constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-    @ResolveField()
-    author(@Root() post: Post): Promise<User | null> {
+    @ResolveField(() => User, { nullable: true })
+    author(@Root() post: Post) {
         return this.prismaService.post
             .findUnique({
                 where: {
@@ -54,21 +43,15 @@ export class PostResolver {
             .author()
     }
 
-    @Query((returns) => Post, { nullable: true })
+    @Query(() => Post, { nullable: true })
     postById(@Args("id") id: number) {
         return this.prismaService.post.findUnique({
             where: { id }
         })
     }
 
-    @Query((returns) => [Post])
-    feed(
-        @Args("searchString", { nullable: true }) searchString: string,
-        @Args("skip", { nullable: true }) skip: number,
-        @Args("take", { nullable: true }) take: number,
-        @Args("orderBy", { nullable: true }) orderBy: PostOrderByUpdatedAtInput,
-        @Context() ctx
-    ) {
+    @Query(() => [Post])
+    feed(@Args("searchString", { nullable: true }) searchString: string) {
         const or = searchString
             ? {
                   OR: [
@@ -80,21 +63,16 @@ export class PostResolver {
 
         return this.prismaService.post.findMany({
             where: {
-                published: true,
                 ...or
-            },
-            take: take || undefined,
-            skip: skip || undefined,
-            orderBy: orderBy || undefined
+            }
         })
     }
 
-    @Mutation((returns) => Post)
+    @Mutation(() => Post)
     createDraft(
         @Args("data") data: PostCreateInput,
-        @Args("authorEmail") authorEmail: string,
-        @Context() ctx
-    ): Promise<Post> {
+        @Args("authorEmail") authorEmail: string
+    ) {
         return this.prismaService.post.create({
             data: {
                 title: data.title,
@@ -106,42 +84,19 @@ export class PostResolver {
         })
     }
 
-    @Mutation((returns) => Post)
-    incrementPostViewCount(@Args("id") id: number): Promise<Post> {
-        return this.prismaService.post.update({
-            where: { id },
-            data: {
-                viewCount: {
-                    increment: 1
-                }
-            }
-        })
-    }
-
-    @Mutation((returns) => Post, { nullable: true })
-    async togglePublishPost(@Args("id") id: number): Promise<Post | null> {
+    @Mutation(() => Post, { nullable: true })
+    async togglePublishPost(@Args("id") id: number) {
         const post = await this.prismaService.post.findUnique({
-            where: { id: id || undefined },
+            where: { id },
             select: {
+                id: true,
                 published: true
             }
         })
 
         return this.prismaService.post.update({
-            where: { id: id || undefined },
+            where: { id: id },
             data: { published: !post?.published }
-        })
-    }
-
-    @Mutation((returns) => Post, { nullable: true })
-    async deletePost(
-        @Args("id") id: number,
-        @Context() ctx
-    ): Promise<Post | null> {
-        return this.prismaService.post.delete({
-            where: {
-                id: id
-            }
         })
     }
 }

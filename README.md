@@ -306,7 +306,7 @@ datasource db {
 
 </details>
 
-## Next steps
+## Next steps 
 
 - Check out the [Prisma docs](https://www.prisma.io/docs)
 - Share your feedback in the [`#product-wishlist`](https://prisma.slack.com/messages/CKQTGR6T0/) channel on the [Prisma Slack](https://slack.prisma.io/)

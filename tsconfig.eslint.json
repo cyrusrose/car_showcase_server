@@ -1,0 +1,10 @@
+{
+    "include": [
+        "tools/**/*.ts",
+        "prisma/**/*.ts",
+        ".eslintrc.js",
+        "jest.config.base.js",
+        "jest.config.js",
+        "jest.preset.js"
+    ]
+}

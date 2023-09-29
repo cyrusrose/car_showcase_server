@@ -1,19 +1,20 @@
-import { YogaDriver, YogaDriverConfig } from "@graphql-yoga/nestjs"
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo"
 import { Module } from "@nestjs/common"
 import { GraphQLModule } from "@nestjs/graphql"
-import { PrismaService } from "./prisma.service"
-import { PostResolver } from "../graphql/resolvers.post"
-import { UserResolver } from "../graphql/resolvers.user"
 import { join } from "path"
+import { SchemaModule } from "./schema.module"
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
 
 @Module({
     imports: [
-        GraphQLModule.forRoot<YogaDriverConfig>({
-            driver: YogaDriver,
+        GraphQLModule.forRoot<ApolloDriverConfig>({
+            driver: ApolloDriver,
             autoSchemaFile: join(process.cwd(), "src/generated/schema.graphql"),
-            buildSchemaOptions: { dateScalarMode: "timestamp" }
-        })
-    ],
-    providers: [PrismaService, UserResolver, PostResolver]
+            buildSchemaOptions: { dateScalarMode: "timestamp" },
+            playground: false,
+            plugins: [ApolloServerPluginLandingPageLocalDefault()]
+        }),
+        SchemaModule
+    ]
 })
 export class AppModule {}

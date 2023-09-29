@@ -1,4 +1,11 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "plugins": ["@nestjs/graphql"]
+  },
+  "options": {
+    "typeFileNameSuffix": [".input.ts", ".args.ts", ".entity.ts", ".resolver.ts"],
+    "introspectComments": false
+  }
 }

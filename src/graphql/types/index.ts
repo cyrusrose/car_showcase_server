@@ -1,2 +1,2 @@
-export * from "./user"
-export * from "./post"
+export * from "./user.model"
+export * from "./post.model"

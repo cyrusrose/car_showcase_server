@@ -3,5 +3,13 @@
     "editor.formatOnSave": false,
     "[prisma]": {
         "editor.defaultFormatter": "Prisma.prisma"
-    }
+    },
+    "cSpell.ignorePaths": [
+        "src",
+        "node_modules",
+        "vscode-extension",
+        ".git/objects",
+        ".vscode",
+        ".vscode-insiders"
+    ]
 }
