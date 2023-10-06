@@ -4,46 +4,31 @@ import {
     Query,
     Mutation,
     Args,
-    Context,
     ResolveField,
-    Root,
-    InputType,
-    Field
+    Root
 } from "@nestjs/graphql"
 import { Inject } from "@nestjs/common"
 import { Post, User } from "./types"
-import { PrismaService } from "../di/prisma.service"
-import { PostCreateInput } from "./post.resolver"
-
-@InputType()
-class UserCreateInput {
-    @Field()
-    email: string
-
-    @Field({ nullable: true })
-    name: string
-
-    @Field(() => [PostCreateInput], { nullable: true })
-    posts: [PostCreateInput]
-}
+import { PrismaService } from "../lib/prisma.service"
+import { PostArgs, UserCreateInput, UserView } from "./types/all.args"
+import { PostService } from "./post.service"
 
 @Resolver(User)
 export class UserResolver {
-    constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+    constructor(
+        @Inject(PrismaService) private prismaService: PrismaService,
+        @Inject(PostService) private postService: PostService
+    ) {}
 
     @ResolveField()
-    async posts(@Root() user: User): Promise<Post[]> {
-        return this.prismaService.user
-            .findUnique({
-                where: {
-                    id: user.id
-                }
-            })
-            .posts()
+    async posts(@Root() user: User, @Args() args: PostArgs) {
+        return this.postService.postsPage(args, {
+            authorId: user.id
+        })
     }
 
-    @Mutation(() => User)
-    async signupUser(@Args("data") data: UserCreateInput): Promise<User> {
+    @Mutation(() => UserView)
+    async signupUser(@Args("data") data: UserCreateInput): Promise<UserView> {
         const postData = data.posts?.map((post) => ({
             title: post.title,
             content: post.content || undefined

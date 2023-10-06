@@ -1,11 +1,12 @@
 import "reflect-metadata"
 import { ObjectType, Field, ID, Int } from "@nestjs/graphql"
 import { User } from "./user.model"
+import { Paginated } from "../../lib/pagination"
 
 @ObjectType()
 export class Post {
-    @Field(() => Int)
-    id: number
+    @Field(() => ID)
+    id: string
     createdAt: Date
     updatedAt: Date
     title: string
@@ -15,3 +16,6 @@ export class Post {
     viewCount: number
     author?: User
 }
+
+@ObjectType()
+export class PostPage extends Paginated(Post) {}

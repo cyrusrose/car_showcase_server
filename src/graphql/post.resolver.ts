@@ -6,31 +6,22 @@ import {
     Args,
     ResolveField,
     Root,
-    Context,
-    Int,
-    InputType,
-    Field,
-    registerEnumType
+    ID
 } from "@nestjs/graphql"
 import { Inject } from "@nestjs/common"
-import { Post, User } from "./types"
-import { PrismaService } from "../di/prisma.service"
-
-@InputType()
-export class PostCreateInput {
-    @Field()
-    title: string
-
-    @Field({ nullable: true })
-    content: string | null
-
-    @Field({ defaultValue: false })
-    published: boolean
-}
+import { Post, PostPage, User } from "./types"
+import { PrismaService } from "../lib/prisma.service"
+import { last, isEmpty } from "lodash"
+import { FeedArgs, PostCreateInput } from "./types/all.args"
+import { PostService } from "./post.service"
+import { Prisma } from "@prisma/client"
 
 @Resolver(Post)
 export class PostResolver {
-    constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+    constructor(
+        @Inject(PrismaService) private prismaService: PrismaService,
+        @Inject(PostService) private postService: PostService
+    ) {}
 
     @ResolveField(() => User, { nullable: true })
     author(@Root() post: Post) {
@@ -44,28 +35,24 @@ export class PostResolver {
     }
 
     @Query(() => Post, { nullable: true })
-    postById(@Args("id") id: number) {
+    postById(@Args("id", { type: () => ID }) id: string) {
         return this.prismaService.post.findUnique({
             where: { id }
         })
     }
 
-    @Query(() => [Post])
-    feed(@Args("searchString", { nullable: true }) searchString: string) {
-        const or = searchString
+    @Query(() => PostPage)
+    async feed(@Args() args: FeedArgs) {
+        const where: Prisma.PostWhereInput = args.searchString
             ? {
                   OR: [
-                      { title: { contains: searchString } },
-                      { content: { contains: searchString } }
+                      { title: { contains: args.searchString } },
+                      { content: { contains: args.searchString } }
                   ]
               }
-            : {}
+            : undefined
 
-        return this.prismaService.post.findMany({
-            where: {
-                ...or
-            }
-        })
+        return this.postService.postsPage(args, where)
     }
 
     @Mutation(() => Post)
@@ -85,7 +72,7 @@ export class PostResolver {
     }
 
     @Mutation(() => Post, { nullable: true })
-    async togglePublishPost(@Args("id") id: number) {
+    async togglePublishPost(@Args("id", { type: () => ID }) id: string) {
         const post = await this.prismaService.post.findUnique({
             where: { id },
             select: {
