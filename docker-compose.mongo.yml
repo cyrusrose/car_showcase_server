@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  mongo1:
+    hostname: "mongo1"
+    container_name: "mongo1"
+    image: mongo:7
+    networks:
+      - mongoCluster
+    ports:
+      - 27001:27017
+    expose:
+      - 27017
+    entrypoint: mongod --replSet devReplicaSet --bind_ip_all
+  mongo2:
+    hostname: "mongo2"
+    container_name: "mongo2"
+    image: mongo:7
+    networks:
+      - mongoCluster
+    ports:
+      - 27002:27017
+    expose:
+      - 27017
+    entrypoint: mongod --replSet devReplicaSet --bind_ip_all
+    depends_on:
+      - mongo1
+networks:
+  mongoCluster:
