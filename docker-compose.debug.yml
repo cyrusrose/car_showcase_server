@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  chatserver:
+    container_name: chatserver
+    image: chatserver
+    env_file:
+      - .dev.env
+    environment:
+      - NODE_ENV=development
+    build:
+      target: development
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+      - 9229:9229
+    networks:
+      - mongo_cluster
+    command: npm run start:debug
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+networks:
+  mongo_cluster:
+    external: true

@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  mongo1:
+    hostname: "mongo1"
+    container_name: "mongo1"
+    image: mongo:7
+    networks:
+      - mongo_cluster
+    ports:
+      - 27001:27017
+    volumes:
+      - mongo1_data:/data/db
+      - ./config:/data/configdb
+    expose:
+      - 27017
+    entrypoint: mongod --config /data/configdb/mongo1.config
+  mongo2:
+    hostname: "mongo2"
+    container_name: "mongo2"
+    image: mongo:7
+    networks:
+      - mongo_cluster
+    volumes:
+      - mongo2_data:/data/db
+      - ./config:/data/configdb
+    ports:
+      - 27002:27017
+    expose:
+      - 27017
+    entrypoint: mongod --config /data/configdb/mongo2.config
+    depends_on:
+      - mongo1
+
+networks:
+  mongo_cluster:
+    name: mongo_cluster
+
+volumes:
+  mongo1_data:
+    name: mongo1_data
+  mongo2_data:
+    name: mongo2_data

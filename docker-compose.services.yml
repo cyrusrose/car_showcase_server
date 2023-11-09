@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  mongo-express:
+    image: mongo-express
+    container_name: "mongo-express"
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_AUTH_DATABASE: ${AUTH_DATABASE}
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_ROOT_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: ${DATABASE_EXPRESS_URL}
+    networks:
+      - mongo_cluster
+
+networks:
+  mongo_cluster:
+    external: true
