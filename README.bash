@@ -62,6 +62,7 @@ db.createUser(
 # sh commands
 
 mongosh -u "reader" -p "reader" --authenticationDatabase "admin"
+mongosh -u "admin" -p "admin" --authenticationDatabase "admin"
 
 # entering container
 docker container exec -it chatserver sh

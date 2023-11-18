@@ -6,7 +6,7 @@
         "generate:prisma": "prisma generate",
         "generate:schema": "nest start --config tools/nest-cli.tools.json",
         "prebuild": "rimraf dist",
-        "clean": "rmdir /s /q dist",
+        "clean": "rm -rf dist",
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "nest start",
