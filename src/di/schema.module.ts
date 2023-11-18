@@ -1,10 +1,9 @@
 import { Module } from "@nestjs/common"
-import { PostResolver } from "../graphql/post.resolver"
-import { UserResolver } from "../graphql/user.resolver"
+import { CarResolver } from "../graphql/car.resolver"
 import { PrismaService } from "../lib/prisma.service"
-import { PostService } from "src/graphql/post.service"
+import { CarsService } from "src/graphql/car.service"
 
 @Module({
-    providers: [UserResolver, PostResolver, PrismaService, PostService]
+    providers: [CarResolver, PrismaService, CarsService]
 })
 export class SchemaModule {}

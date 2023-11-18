@@ -2,25 +2,25 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Post {
+type Car {
   id: ID!
-  viewCount: Int!
-  createdAt: Timestamp!
-  updatedAt: Timestamp!
-  title: String!
-  content: String
-  published: Boolean
-  author: User
+  city_mpg: Int!
+  cylinders: Int
+  combination_mpg: Int!
+  displacement: Float
+  highway_mpg: Int!
+  year: Int!
+  class: String!
+  drive: String!
+  fuel_type: String!
+  make: String!
+  model: String!
+  transmission: String!
 }
 
-"""
-`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
-
-type PostEdge {
+type CarEdge {
   cursor: String!
-  node: Post!
+  node: Car!
 }
 
 type PageInfo {
@@ -28,46 +28,13 @@ type PageInfo {
   hasNextPage: Boolean!
 }
 
-type PostPage {
-  edges: [PostEdge!]
-  nodes: [Post!]!
+type CarPage {
+  edges: [CarEdge!]
+  nodes: [Car!]!
   totalCount: Int!
   pageInfo: PageInfo!
 }
 
-type User {
-  id: ID!
-  email: String!
-  name: String
-  posts(first: Int!, after: ID): PostPage!
-}
-
-type UserView {
-  id: ID!
-  email: String!
-  name: String
-}
-
 type Query {
-  allUsers: [User!]
-  postById(id: ID!): Post
-  feed(first: Int!, after: ID, searchString: String): PostPage!
-}
-
-type Mutation {
-  signupUser(data: UserCreateInput!): UserView!
-  createDraft(data: PostCreateInput!, authorEmail: String!): Post!
-  togglePublishPost(id: ID!): Post
-}
-
-input UserCreateInput {
-  email: String!
-  name: String
-  posts: [PostCreateInput!]
-}
-
-input PostCreateInput {
-  title: String!
-  content: String
-  published: Boolean! = false
+  feed(first: Int!, after: ID, year: Int, make: String, model: String, fuel: String): CarPage!
 }

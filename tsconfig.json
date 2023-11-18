@@ -14,7 +14,8 @@
         "strict": false,
         "esModuleInterop": true
     },
-    "include": [
-        "src/**/*"
-    ]
+    "watchOptions": {
+        "watchFile": "fixedPollingInterval"
+    },
+    "include": ["src/**/*"]
 }

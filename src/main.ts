@@ -7,6 +7,11 @@ async function bootstrap() {
     app.enableShutdownHooks()
     app.useGlobalPipes(new ValidationPipe())
 
+    app.enableCors({
+        credentials: true,
+        origin: "http://localhost:3000/graphql"
+    })
+
     console.log(process.env.NODE_ENV)
     await app.listen(3000, () => {
         console.log(`

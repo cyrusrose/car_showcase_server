@@ -6,8 +6,7 @@ import {
 import { writeFileSync } from "fs"
 import { printSchema } from "graphql"
 import { resolve } from "path"
-import { UserResolver } from "./graphql/user.resolver"
-import { PostResolver } from "./graphql/post.resolver"
+import { CarResolver } from "./graphql/car.resolver"
 
 // With CLI Plugin
 async function generateSchema() {
@@ -16,7 +15,7 @@ async function generateSchema() {
     await app.init()
 
     const gqlSchemaFactory = app.get(GraphQLSchemaFactory)
-    const schema = await gqlSchemaFactory.create([UserResolver, PostResolver])
+    const schema = await gqlSchemaFactory.create([CarResolver])
 
     console.log(__dirname)
     writeFileSync(

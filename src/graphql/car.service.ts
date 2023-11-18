@@ -1,21 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { PostPage } from "./types"
 import { last, isEmpty } from "lodash"
-import { PostArgs } from "./types/all.args"
+import { CarArgs } from "./types/car.args"
 import { Prisma } from "@prisma/client"
 import { PrismaService } from "src/lib/prisma.service"
+import { CarPage } from "./types"
 
 @Injectable()
-export class PostService {
+export class CarsService {
     constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
-    async postsPage(
-        args: PostArgs,
-        where?: Prisma.PostWhereInput
-    ): Promise<PostPage> {
+    async page(args: CarArgs, where?: Prisma.CarWhereInput): Promise<CarPage> {
         const take = args.first > 0 ? args.first + 1 : args.first - 1
-        const posts = args.after
-            ? await this.prismaService.post.findMany({
+        const cars = args.after
+            ? await this.prismaService.car.findMany({
                   take: take,
                   skip: 1,
                   cursor: {
@@ -23,30 +20,30 @@ export class PostService {
                   },
                   where: where
               })
-            : await this.prismaService.post.findMany({
+            : await this.prismaService.car.findMany({
                   take: take,
                   where: where
               })
 
-        const totalCount = await this.prismaService.post.count({
+        const totalCount = await this.prismaService.car.count({
             where: where
         })
 
-        if (!isEmpty(posts)) {
-            const hasNext = posts.length > args.first
-            if (hasNext) posts.pop()
+        if (!isEmpty(cars)) {
+            const hasNext = cars.length > args.first
+            if (hasNext) cars.pop()
 
-            const endCursor = last(posts).id
+            const endCursor = last(cars).id
 
             return {
                 pageInfo: {
                     endCursor: endCursor,
                     hasNextPage: hasNext
                 },
-                nodes: posts,
-                edges: posts.map((post) => ({
-                    cursor: post.id,
-                    node: post
+                nodes: cars,
+                edges: cars.map((car) => ({
+                    cursor: car.id,
+                    node: car
                 })),
                 totalCount: totalCount
             }
