@@ -1,6 +1,23 @@
 version: "3.7"
 
 services:
+  mongo-express:
+    image: mongo-express
+    container_name: "mongo-express"
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_AUTH_DATABASE: ${EXP_AUTH_DATABASE}
+      ME_CONFIG_BASICAUTH_USERNAME: ${EXP_USERNAME}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${EXP_PASSWORD}
+      ME_CONFIG_MONGODB_URL: ${EXP_DATABASE_URL}
+    networks:
+      - mongo_cluster
+    depends_on:
+      - mongo1
+      - mongo2
+
   chatserver:
     container_name: chatserver
     image: chatserver
@@ -21,7 +38,48 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    depends_on:
+      - mongo1
+      - mongo2
+
+  mongo1:
+    hostname: "mongo1"
+    container_name: "mongo1"
+    image: mongo:7
+    networks:
+      - mongo_cluster
+    ports:
+      - 27001:27017
+    volumes:
+      - mongo1_data:/data/db
+      - ./config:/data/configdb
+    expose:
+      - 27017
+    entrypoint: mongod --config /data/configdb/mongo1.config
+
+  mongo2:
+    hostname: "mongo2"
+    container_name: "mongo2"
+    image: mongo:7
+    networks:
+      - mongo_cluster
+    volumes:
+      - mongo2_data:/data/db
+      - ./config:/data/configdb
+    ports:
+      - 27002:27017
+    expose:
+      - 27017
+    entrypoint: mongod --config /data/configdb/mongo2.config
+    depends_on:
+      - mongo1
 
 networks:
   mongo_cluster:
-    external: true
+    name: mongo_cluster
+
+volumes:
+  mongo1_data:
+    name: mongo1_data
+  mongo2_data:
+    name: mongo2_data

@@ -9,7 +9,7 @@ async function bootstrap() {
 
     app.enableCors({
         credentials: true,
-        origin: "http://localhost:3000/graphql"
+        origin: ["http://localhost:3000/graphql", "http://localhost:3001"]
     })
 
     console.log(process.env.NODE_ENV)

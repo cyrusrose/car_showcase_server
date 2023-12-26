@@ -1,13 +1,12 @@
 # list of all used commands
 
-# composing containers
-# -V -- remove unnamed volumes
-docker-compose -f "./docker-compose.debug.yml" --env-file ".dev.env"  up --build -V -d
-
 ## mongodb repicaset setup
 # composing replicaset up
-docker-compose -f docker-compose.mongo.yml up -d -V
-docker-compose -f "./docker-compose.services.yml" --env-file ".services.env"  up --build -V -d
+docker-compose -f docker-compose.debug.yml up -d -V mongo1 mongo2
+
+# composing containers
+# -V -- remove unnamed volumes
+docker-compose -f "./docker-compose.debug.yml" --env-file ".dev.env"  up --build -V -d mongo-express chatserver
 
 # entering container
 docker container exec -it mongo1 sh
