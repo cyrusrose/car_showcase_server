@@ -1,7 +1,7 @@
 # Car-Showcase Microcervices App
 
-<p align="center">
-  <img src="./images/schema.png" />
+<p align="center" >
+  <img src="./images/schema.png" width="80%"/>
 </p>
 
 A server for **[Car Showcase](https://github.com/cyrusrose/car_showcase)** webclient. It's a NestJs monorepo with several microservices.
