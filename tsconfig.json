@@ -12,10 +12,11 @@
         "incremental": true,
         "skipLibCheck": true,
         "strict": false,
-        "esModuleInterop": true
-    },
-    "watchOptions": {
-        "watchFile": "fixedPollingInterval"
-    },
-    "include": ["src/**/*"]
+        "esModuleInterop": true,
+        "paths": {
+            "@chat/*": ["./apps/chat_server/src/*"],
+            "@common": ["libs/common/src"],
+            "@common/*": ["libs/common/src/*"]
+        }
+    }
 }

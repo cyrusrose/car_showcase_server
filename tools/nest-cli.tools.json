@@ -1,12 +1,12 @@
 {
     "collection": "@nestjs/schematics",
-    "sourceRoot": "src",
+    "sourceRoot": "apps/chat_server/src",
     "compilerOptions": {
-      "plugins": ["@nestjs/graphql"]
+        "plugins": ["@nestjs/graphql"]
     },
     "options": {
-      "typeFileNameSuffix": [".input.ts", ".args.ts", ".model.ts"],
-      "introspectComments": false
+        "typeFileNameSuffix": [".input.ts", ".args.ts", ".model.ts"],
+        "introspectComments": false
     },
     "entryFile": "generate_schema"
-  }
+}

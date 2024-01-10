@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Car {
+  id: ID!
+  city_mpg: Int!
+  cylinders: Int
+  combination_mpg: Int!
+  displacement: Float
+  highway_mpg: Int!
+  year: Int!
+  class: String!
+  drive: String!
+  fuel_type: String!
+  make: String!
+  model: String!
+  transmission: String!
+}
+
+type CarEdge {
+  cursor: String!
+  node: Car!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type CarPage {
+  edges: [CarEdge!]
+  nodes: [Car!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  feed(first: Int!, after: ID, year: Int, make: String, model: String, fuel: String): CarPage!
+  all: [Car!]!
+}

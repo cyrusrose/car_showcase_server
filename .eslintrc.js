@@ -1,7 +1,12 @@
 module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: ["tsconfig.json", "tsconfig.eslint.json"],
+        project: [
+            "tsconfig.json",
+            "tsconfig.eslint.json",
+            "apps/chat_server/tsconfig.app.json",
+            "apps/gateway/tsconfig.app.json"
+        ],
         sourceType: "module"
     },
     plugins: ["@typescript-eslint/eslint-plugin"],

@@ -1,11 +1,50 @@
 {
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "src",
-    "compilerOptions": {
-        "plugins": ["@nestjs/graphql"]
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/chat_server/src",
+  "compilerOptions": {
+    "plugins": [
+      "@nestjs/graphql"
+    ],
+    "webpack": true,
+    "tsConfigPath": "apps/chat_server/tsconfig.app.json"
+  },
+  "options": {
+    "typeFileNameSuffix": [
+      ".input.ts",
+      ".args.ts",
+      ".model.ts"
+    ],
+    "introspectComments": false
+  },
+  "monorepo": true,
+  "root": "apps/chat_server",
+  "projects": {
+    "chat_server": {
+      "type": "application",
+      "root": "apps/chat_server",
+      "entryFile": "main",
+      "sourceRoot": "apps/chat_server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/chat_server/tsconfig.app.json"
+      }
     },
-    "options": {
-        "typeFileNameSuffix": [".input.ts", ".args.ts", ".model.ts"],
-        "introspectComments": false
+    "gateway": {
+      "type": "application",
+      "root": "apps/gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gateway/tsconfig.app.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
+      }
     }
+  }
 }
