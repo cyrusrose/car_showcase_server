@@ -1,12 +1,16 @@
 {
     "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/chat_server/src",
+    "sourceRoot": "apps/gateway/src",
     "compilerOptions": {
-        "plugins": ["@nestjs/graphql"]
+        "plugins": ["@nestjs/graphql"],
+        "webpack": true,
+        "tsConfigPath": "apps/gateway/tsconfig.app.json"
     },
     "options": {
         "typeFileNameSuffix": [".input.ts", ".args.ts", ".model.ts"],
         "introspectComments": false
     },
-    "entryFile": "generate_schema"
+    "entryFile": "generate_schema",
+    "monorepo": true,
+    "root": "apps/gateway"
 }

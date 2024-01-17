@@ -11,7 +11,7 @@ A server for **[Car Showcase](https://github.com/cyrusrose/car_showcase)** webcl
 -   [Gateway](./apps/gateway/).
 -   [Main app](./apps/chat_server/).
 -   [Authentication app](./) - in development.
--   [Statistics app](./) - in development.
+-   [Statistics app](./apps/statistics/).
 
 ## Description
 

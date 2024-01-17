@@ -33,7 +33,7 @@ export function Paginated<T extends Node>(classRef: Type<T>) {
         @Field()
         cursor: string
 
-        @Field((type) => classRef)
+        @Field(() => classRef)
         node: T
     }
 
@@ -48,16 +48,16 @@ export function Paginated<T extends Node>(classRef: Type<T>) {
 
     @ObjectType({ isAbstract: true })
     abstract class Page implements PaginatedType<T> {
-        @Field((type) => [Edge], { nullable: true })
+        @Field(() => [Edge], { nullable: true })
         edges?: Edge[]
 
-        @Field((type) => [classRef])
+        @Field(() => [classRef])
         nodes?: T[]
 
-        @Field((type) => Int)
+        @Field(() => Int)
         totalCount: number
 
-        @Field((type) => PageInfo)
+        @Field(() => PageInfo)
         pageInfo: PageInfoType
     }
     return Page as Type<PaginatedType<T>>

@@ -51,6 +51,30 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - chatserver
+      - statistics
+      - rabbitmq
+
+  statistics:
+    container_name: statistics
+    image: statistics
+    env_file:
+      - ./apps/statistics/.env
+    build:
+      target: development
+      context: .
+      dockerfile: ./apps/statistics/Dockerfile
+    ports:
+      - 9224:9229
+    networks:
+      - mongo_cluster
+    command: npm run start:debug statistics
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
       - rabbitmq
 
   mongodb-primary:

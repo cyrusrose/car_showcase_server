@@ -16,6 +16,7 @@ export abstract class AbstractService<T extends Node> {
     ): Promise<PaginatedType<T>> {
         const name = modelName.toLowerCase()
         const take = args.first > 0 ? args.first + 1 : args.first - 1
+
         const cars: T[] = args.after
             ? await this.prismaService[name].findMany({
                   take: take,

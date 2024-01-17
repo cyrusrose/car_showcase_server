@@ -7,7 +7,7 @@ docker-compose -f docker-compose.debug.yml up -d -V mongodb-primary mongodb-seco
 
 # composing containers
 # -V -- remove unnamed volumes
-docker-compose -f "./docker-compose.debug.yml" --env-file ".env" up --build -V chatserver gateway
+docker-compose -f "./docker-compose.debug.yml" --env-file ".env" up --build -V chatserver gateway statistics
 
 docker-compose -f "./docker-compose.debug.yml" start chatserver gateway
 docker-compose -f "./docker-compose.debug.yml" stop chatserver gateway

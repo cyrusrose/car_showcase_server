@@ -18,6 +18,11 @@ type Car {
   transmission: String!
 }
 
+type CarMakeRespond {
+  count: Int!
+  make: String!
+}
+
 type CarEdge {
   cursor: String!
   node: Car!
@@ -33,6 +38,7 @@ type CarPage {
   nodes: [Car!]!
   totalCount: Int!
   pageInfo: PageInfo!
+  makeCount: CarMakeRespond
 }
 
 type Query {

@@ -18,7 +18,7 @@ async function generateSchema() {
     const schema = await gqlSchemaFactory.create([CarResolver])
 
     writeFileSync(
-        resolve(process.cwd(), "apps/generated/schema.graphql"),
+        resolve(process.cwd(), "generated/schema.graphql"),
         printSchema(schema)
     )
 }

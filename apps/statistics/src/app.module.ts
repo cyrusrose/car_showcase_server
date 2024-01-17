@@ -1,11 +1,10 @@
 import { Module } from "@nestjs/common"
+import { StatisticsController } from "./statistics.controller"
+import { StatisticsService } from "./statistics.service"
 import * as Joi from "joi"
-import { CarController } from "@chat/car.controller"
 import { PrismaService } from "@common/database/prisma.service"
-import { CarsService } from "@chat/car.service"
 import { ConfigModule } from "@nestjs/config"
 import { RmqModule } from "@common/rmq/rmq.module"
-import { STATS_SERVICE } from "@common/constants"
 
 @Module({
     imports: [
@@ -13,17 +12,14 @@ import { STATS_SERVICE } from "@common/constants"
             isGlobal: true,
             validationSchema: Joi.object({
                 RABBIT_MQ_URI: Joi.string().required(),
-                RABBIT_MQ_CHAT_QUEUE: Joi.string().required(),
                 RABBIT_MQ_STATS_QUEUE: Joi.string().required(),
                 DATABASE_URL: Joi.string().required()
             }),
-            envFilePath: "apps/chat_server/.env"
+            envFilePath: "apps/statistics/.env"
         }),
-        RmqModule.register({
-            name: STATS_SERVICE
-        })
+        RmqModule
     ],
-    controllers: [CarController],
-    providers: [PrismaService, CarsService]
+    controllers: [StatisticsController],
+    providers: [PrismaService, StatisticsService]
 })
 export class AppModule {}

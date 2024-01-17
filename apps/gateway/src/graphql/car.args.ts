@@ -1,4 +1,4 @@
-import { CarPaginatedArgs } from "@common/graphql/car.args"
+import { CarPaginatedArgs } from "@common/rmq"
 import { ArgsType, Field, Int, ID } from "@nestjs/graphql"
 import { NotEquals } from "class-validator"
 

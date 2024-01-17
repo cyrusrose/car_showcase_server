@@ -22,3 +22,9 @@ model Car {
   transmission    String
   year            Int
 }
+
+model CarStats {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  make  String @unique
+  count Int
+}

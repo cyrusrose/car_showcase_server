@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID, Int, Float } from "@nestjs/graphql"
 import { Paginated } from "@common/graphql/pagination"
 import { Node } from "@common/graphql/pagination"
+import { CarPaginatedType, IPaginatedType, MakeRespond } from "@common/rmq"
 
 @ObjectType()
 export class Car implements Node {
@@ -27,4 +28,14 @@ export class Car implements Node {
 }
 
 @ObjectType()
-export class CarPage extends Paginated(Car) {}
+export class CarMakeRespond implements MakeRespond {
+    @Field(() => Int, { defaultValue: 0 })
+    count: number
+    make: string
+}
+
+@ObjectType()
+export class CarPage extends Paginated(Car) implements IPaginatedType<Car> {
+    @Field(() => CarMakeRespond)
+    makeCount?: MakeRespond
+}

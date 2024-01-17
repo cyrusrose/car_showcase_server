@@ -4,7 +4,7 @@ import { ClientProxy } from "@nestjs/microservices"
 import { FeedArgs } from "./car.args"
 import { firstValueFrom, lastValueFrom, tap } from "rxjs"
 import { Car, CarPage } from "./car.model"
-import { CarPaginatedArgs } from "@common/graphql/car.args"
+import { CarPaginatedArgs } from "@common/rmq"
 
 @Injectable()
 export class CarsService {
@@ -16,10 +16,10 @@ export class CarsService {
     }
 
     async page(args: FeedArgs): Promise<CarPage> {
-        const car = this.chatClient.send<CarPage, CarPaginatedArgs>(
-            "car_feed",
-            args
+        const cars = lastValueFrom(
+            this.chatClient.send<CarPage, CarPaginatedArgs>("car_feed", args)
         )
-        return lastValueFrom(car)
+
+        return cars
     }
 }

@@ -5,6 +5,7 @@ import { RmqService } from "./rmq.service"
 
 interface RmqModuleOptions {
     name: string
+    replyQueue?: string
 }
 
 @Module({
@@ -12,7 +13,7 @@ interface RmqModuleOptions {
     exports: [RmqService]
 })
 export class RmqModule {
-    static register({ name }: RmqModuleOptions): DynamicModule {
+    static register({ name, replyQueue }: RmqModuleOptions): DynamicModule {
         return {
             module: RmqModule,
             imports: [
@@ -27,7 +28,8 @@ export class RmqModule {
                                 ],
                                 queue: configService.get<string>(
                                     `RABBIT_MQ_${name}_QUEUE`
-                                )
+                                ),
+                                replyQueue
                             }
                         }),
                         inject: [ConfigService]

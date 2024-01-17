@@ -1,7 +1,7 @@
 import { Controller, Inject } from "@nestjs/common"
 import { CarsService } from "./car.service"
 import { Car } from "@prisma/client"
-import { CarPaginatedArgs } from "@common/graphql/car.args"
+import { CarPaginatedArgs } from "@common/rmq"
 import { MessagePattern, Payload } from "@nestjs/microservices"
 import { PaginatedType } from "@common/graphql/pagination"
 
