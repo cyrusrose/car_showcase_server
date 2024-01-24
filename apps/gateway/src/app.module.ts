@@ -3,18 +3,21 @@ import { Module } from "@nestjs/common"
 import { GraphQLModule } from "@nestjs/graphql"
 import { join } from "path"
 import * as Joi from "joi"
-import { PrismaService } from "@common/database/prisma.service"
 import { CarsService } from "./graphql/car.service"
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
 import { ConfigModule } from "@nestjs/config"
 import { RmqModule } from "@common/rmq/rmq.module"
 import { CHAT_SERVICE } from "@common/constants"
 import { CarResolver } from "./graphql/car.resolver"
+import { PrismaModule } from "@common/database/prisma.module"
+import { AuthModule } from "./auth/auth.module"
 
 const SCHEMA = {
     PORT: Joi.number().required(),
     RABBIT_MQ_URI: Joi.string().required(),
-    RABBIT_MQ_CHAT_QUEUE: Joi.string().required()
+    RABBIT_MQ_CHAT_QUEUE: Joi.string().required(),
+    JWT_SECRET: Joi.string().required(),
+    JWT_EXPIRATION: Joi.string().required()
 }
 
 export function schemaProperty(name: keyof typeof SCHEMA) {
@@ -23,6 +26,8 @@ export function schemaProperty(name: keyof typeof SCHEMA) {
 
 @Module({
     imports: [
+        AuthModule,
+        PrismaModule,
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: Joi.object(SCHEMA),
@@ -39,6 +44,6 @@ export function schemaProperty(name: keyof typeof SCHEMA) {
             plugins: [ApolloServerPluginLandingPageLocalDefault()]
         })
     ],
-    providers: [CarResolver, PrismaService, CarsService]
+    providers: [CarResolver, CarsService]
 })
 export class AppModule {}

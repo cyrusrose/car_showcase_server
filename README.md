@@ -8,9 +8,8 @@ A server for **[Car Showcase](https://github.com/cyrusrose/car_showcase)** webcl
 
 ## Microsevices
 
--   [Gateway](./apps/gateway/).
+-   [Gateway](./apps/gateway/) with local authentication.
 -   [Main app](./apps/chat_server/).
--   [Authentication app](./) - in development.
 -   [Statistics app](./apps/statistics/).
 
 ## Description

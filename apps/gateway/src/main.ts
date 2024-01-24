@@ -3,16 +3,17 @@ import { AppModule } from "./app.module"
 import { ValidationPipe } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { schemaProperty } from "./app.module"
+import { RmqOptions } from "@nestjs/microservices"
+import { RmqService } from "@common/rmq/rmq.service"
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
 
-    app.enableShutdownHooks() //
+    app.enableShutdownHooks()
     app.useGlobalPipes(new ValidationPipe())
 
     const configService = app.get<ConfigService>(ConfigService)
     const PORT = configService.get(schemaProperty("PORT"))
-    console.log(configService.get(schemaProperty("RABBIT_MQ_URI")))
     // app.enableCors({
     //     credentials: true,
     //     origin: [
